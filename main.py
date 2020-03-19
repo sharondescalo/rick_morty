@@ -26,25 +26,31 @@ def main():
     global ricky_morty_url
     page=1 #init
     n_pages=10 #init
+
+    #i chose to overwrite the file if it's already written. than append data inside the while loop.
     with open('results.csv', 'w', newline='') as file:
         fieldnames = ['Name', 'Location','Image']
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
-        while True:  
-            ricky_morty_url = 'https://rickandmortyapi.com/api/'
-            try:
-                ret = getCharctersWithParams('human','alive',page)
-            except:
-                print("An exception occurred")
+    while True:  
+        ricky_morty_url = 'https://rickandmortyapi.com/api/'
+        try:
+            ret = getCharctersWithParams('human','alive',page)
+        except:
+            print("An exception occurred")
+            break
+        
+        n_pages = ret['info']['pages']
+        for char in ret['results']:
+            if('Earth' in char['origin']['name']): #I choose contains not equal
+                with open('results.csv', 'a', newline='') as file:
+                    fieldnames = ['Name', 'Location','Image']
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    # writer.writeheader()
+                    writer.writerow({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
+        page=page+1
+        if(page > n_pages):
                 break
             
-            n_pages = ret['info']['pages']
-            for char in ret['results']:
-                if('Earth' == char['origin']['name']): #I choose contains not equal
-                    writer.writerow({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
-            page=page+1
-            if(page > n_pages):
-                    break
-              
 if __name__ == "__main__":
     main()
