@@ -40,7 +40,7 @@ def main():
             
             n_pages = ret['info']['pages']
             for char in ret['results']:
-                if('Earth' in char['origin']['name']):
+                if('Earth' == char['origin']['name']): #I choose contains not equal
                     writer.writerow({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
             page=page+1
             if(page > n_pages):
