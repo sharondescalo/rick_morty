@@ -26,14 +26,10 @@ def main():
     global ricky_morty_url
     page=1 #init
     n_pages=10 #init
+    data_list =[]
+    ricky_morty_url = 'https://rickandmortyapi.com/api/'
 
-    #i chose to overwrite the file if it's already written. than append data inside the while loop.
-    with open('results.csv', 'w', newline='') as file:
-        fieldnames = ['Name', 'Location','Image']
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
     while True:  
-        ricky_morty_url = 'https://rickandmortyapi.com/api/'
         try:
             ret = getCharctersWithParams('human','alive',page)
         except:
@@ -43,14 +39,17 @@ def main():
         n_pages = ret['info']['pages']
         for char in ret['results']:
             if('Earth' in char['origin']['name']): #I choose contains not equal
-                with open('results.csv', 'a', newline='') as file:
-                    fieldnames = ['Name', 'Location','Image']
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    # writer.writeheader()
-                    writer.writerow({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
+                data_list.append({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
         page=page+1
         if(page > n_pages):
                 break
-            
+    
+    with open('results.csv', 'w', newline='') as file:
+        fieldnames = ['Name', 'Location','Image']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(data_list)
+
+                 
 if __name__ == "__main__":
     main()
