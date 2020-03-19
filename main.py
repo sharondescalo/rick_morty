@@ -40,8 +40,8 @@ def main():
             
             n_pages = ret['info']['pages']
             for char in ret['results']:
-                if(char['origin']['name'] == 'Earth'):
-                    writer.writerow({'Name': char['name'], 'Location': char['location'],'Image' :char['image'] })
+                if('Earth' in char['origin']['name']):
+                    writer.writerow({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
             page=page+1
             if(page > n_pages):
                     break
