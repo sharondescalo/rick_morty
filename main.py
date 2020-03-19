@@ -25,6 +25,7 @@ def main():
     # Get environment variables
     global ricky_morty_url
     page=1 #init
+
     n_pages=10 #init
     data_list =[]
     ricky_morty_url = 'https://rickandmortyapi.com/api/'
@@ -35,8 +36,8 @@ def main():
         except:
             print("An exception occurred")
             break
-        
-        n_pages = ret['info']['pages']
+        if (page == 1):
+            n_pages = ret['info']['pages']
         for char in ret['results']:
             if('Earth' in char['origin']['name']): #I choose contains not equal
                 data_list.append({'Name': char['name'], 'Location': char['location']['name'],'Image' :char['image'] })
